@@ -23,6 +23,36 @@ unsigned int get_string_len(unsigned int list_len) {
     }   
 }
 
+void insert_after(linked_list* lst, node_t* node, int val) {
+    node_t* inserted_node = init_node(val);
+    node_t* next_node = node->next;
+    if (next_node != NULL) {
+        next_node->prev = inserted_node;
+        inserted_node->next = next_node;
+    } else {
+        lst->tail = inserted_node;
+    }
+    node->next = inserted_node;
+    inserted_node->prev = node;
+    lst->len++;
+}
+
+void remove_node(linked_list* list, node_t* node) {
+    if (node == list->head) {
+        list->head = node->next;
+    } else {
+        node->prev->next = node->next;
+    }
+
+    if (node == list->tail) {
+        list->tail = node->prev;
+    } else {
+        node->next->prev = node->prev;
+    }
+    free(node);
+    list->len--;
+}
+
 /* public functions */
 void init_list(linked_list* lst){
     lst->head = NULL;
@@ -63,19 +93,44 @@ void add_start(linked_list* list, int val) {
 }
 
 bool add_after_val(linked_list* list, int val_to_insert, int val_to_look) {
-    return true;
+    node_t* temp = list->head;
+    while (temp != NULL) {
+        if (temp->data == val_to_look) {
+            insert_after(list, temp, val_to_insert);
+            return true;
+        }
+        temp = temp->next;
+    }
+    return false;
 }
 
 int first_index_from_val(linked_list* list, int val) {
-    return 0;
+    node_t* temp = list->head;
+    unsigned int index = 0;
+    while (temp != NULL) {
+        if (temp->data == val) {
+            return index;
+        }
+        index++;
+        temp = temp->next;
+    }
+    return -1;
 }
 
-bool delete_from_index(linked_list* lst, unsigned int index) {
+bool delete_from_index(linked_list* list, unsigned int index) {
+    node_t* temp = list->head;
+    if (index > (list->len - 1)) {
+        return false;
+    }
+    for (unsigned int i = 0; i < index; i++) {
+        temp=temp->next;
+    }
+    remove_node(list, temp);
     return true;
 }
 
-void print_lst(linked_list* lst) {
-    unsigned int str_len = get_string_len(lst->len);
+void print_lst(linked_list* list) {
+    unsigned int str_len = get_string_len(list->len);
     char* result = (char*) malloc(str_len);
 
     result[0] = '[';
@@ -83,7 +138,7 @@ void print_lst(linked_list* lst) {
     result[str_len - 1] = '\0';
 
     unsigned int offset = 1;
-    node_t* tmp = lst->head;
+    node_t* tmp = list->head;
     while (tmp != NULL) {
         result[offset] = INT_TO_CHAR(tmp->data);
         if (tmp->next != NULL) {
@@ -97,6 +152,13 @@ void print_lst(linked_list* lst) {
     printf("%s\n", result);
 }
 
-void free_list(linked_list* lst) {
-    return;
+void free_list(linked_list* list) {
+    node_t* current_head = list->head;
+    node_t* node_to_free = NULL;
+    while (current_head != NULL) {
+        node_to_free = current_head;
+        current_head = current_head->next;
+        free(node_to_free);
+    }
+    list->len = 0;
 }

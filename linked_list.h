@@ -25,10 +25,10 @@ bool add_after_val(linked_list* list, int val_to_insert, int val_to_look);
 
 int first_index_from_val(linked_list* list, int val);
 
-bool delete_from_index(linked_list* lst, unsigned int index);
+bool delete_from_index(linked_list* list, unsigned int index);
 
-void print_lst(linked_list* lst);
+void print_lst(linked_list* list);
 
-void free_list(linked_list* lst);
+void free_list(linked_list* list);
 
 #endif
