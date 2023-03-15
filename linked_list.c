@@ -15,7 +15,7 @@ node_t* init_node(int val) {
 
 unsigned int get_string_len(unsigned int list_len) {
     if (list_len > 0) {
-        // 2 for commas, list_len for elements, list_len - 1 for commas, list_len - 1 for spaces, 1 for '\0'
+        // 2 for brackets, (list_len) for elements, (list_len - 1) for commas, (list_len - 1) for spaces, 1 for '\0'
         return 2 + list_len + 2 * (list_len - 1) + 1;
     } else {
         // for empty list "[]\0"
