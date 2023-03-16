@@ -4,6 +4,13 @@
 
 #define INT_TO_CHAR(x) ((x) + '0')
 
+/* This struct is in use only by the internal functions of the linked list and shouldn't be used by the client of this module */
+typedef struct _list_node {
+    int data;
+    struct _list_node* next;
+    struct _list_node* prev;
+} list_node_t;
+
 /* private functions */
 list_node_t* init_node(int val) {
     list_node_t* new_node = (list_node_t*)malloc(sizeof(list_node_t));

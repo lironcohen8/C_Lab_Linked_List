@@ -3,11 +3,8 @@
 
 #include <stdbool.h>
 
-typedef struct _list_node {
-    int data;
-    struct _list_node* next;
-    struct _list_node* prev;
-} list_node_t;
+/* forward declare the node struct but the actioal definition is not exposed to the client of this module */
+typedef struct _list_node list_node_t;
 
 typedef struct _linked_list {
     list_node_t* head;
