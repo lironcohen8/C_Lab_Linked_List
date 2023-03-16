@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define INT_TO_CHAR(x) ((x) + '0')
-
 /* This struct is in use only by the internal functions of the linked list and shouldn't be used by the client of this module */
 typedef struct _list_node {
     int data;
