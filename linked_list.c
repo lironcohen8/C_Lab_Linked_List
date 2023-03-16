@@ -5,39 +5,29 @@
 #define INT_TO_CHAR(x) ((x) + '0')
 
 /* private functions */
-node_t* init_node(int val) {
-    node_t* new_node = (node_t*)malloc(sizeof(node_t));
+list_node_t* init_node(int val) {
+    list_node_t* new_node = (list_node_t*)malloc(sizeof(list_node_t));
     new_node->data = val;
     new_node->next = NULL;
     new_node->prev = NULL;
     return new_node;
 }
 
-unsigned int get_string_len(unsigned int list_len) {
-    if (list_len > 0) {
-        // 2 for brackets, (list_len) for elements, (list_len - 1) for commas, (list_len - 1) for spaces, 1 for '\0'
-        return 2 + list_len + 2 * (list_len - 1) + 1;
-    } else {
-        // for empty list "[]\0"
-        return 3;
-    }   
-}
-
-void insert_after(linked_list* lst, node_t* node, int val) {
-    node_t* inserted_node = init_node(val);
-    node_t* next_node = node->next;
+void insert_after_node(linked_list* lst, list_node_t* node, int val) {
+    list_node_t* node_to_insert = init_node(val);
+    list_node_t* next_node = node->next;
     if (next_node != NULL) {
-        next_node->prev = inserted_node;
-        inserted_node->next = next_node;
+        next_node->prev = node_to_insert;
+        node_to_insert->next = next_node;
     } else {
-        lst->tail = inserted_node;
+        lst->tail = node_to_insert;
     }
-    node->next = inserted_node;
-    inserted_node->prev = node;
+    node->next = node_to_insert;
+    node_to_insert->prev = node;
     lst->len++;
 }
 
-void remove_node(linked_list* list, node_t* node) {
+void remove_node(linked_list* list, list_node_t* node) {
     if (node == list->head) {
         list->head = node->next;
     } else {
@@ -61,7 +51,7 @@ void init_list(linked_list* lst){
 }
 
 void add_end(linked_list* list, int val) {
-    node_t* new_node = init_node(val);
+    list_node_t* new_node = init_node(val);
 
     if (list->tail == NULL) {
         // Empty list
@@ -77,7 +67,7 @@ void add_end(linked_list* list, int val) {
 }
 
 void add_start(linked_list* list, int val) {
-    node_t* new_node = init_node(val);
+    list_node_t* new_node = init_node(val);
 
     if (list->head == NULL) {
         // Empty list
@@ -93,32 +83,32 @@ void add_start(linked_list* list, int val) {
 }
 
 bool add_after_val(linked_list* list, int val_to_insert, int val_to_look) {
-    node_t* temp = list->head;
-    while (temp != NULL) {
-        if (temp->data == val_to_look) {
-            insert_after(list, temp, val_to_insert);
+    list_node_t* current_node = list->head;
+    while (current_node != NULL) {
+        if (current_node->data == val_to_look) {
+            insert_after_node(list, current_node, val_to_insert);
             return true;
         }
-        temp = temp->next;
+        current_node = current_node->next;
     }
     return false;
 }
 
-int first_index_from_val(linked_list* list, int val) {
-    node_t* temp = list->head;
+int first_index_of_val(linked_list* list, int val) {
+    list_node_t* current_node = list->head;
     unsigned int index = 0;
-    while (temp != NULL) {
-        if (temp->data == val) {
+    while (current_node != NULL) {
+        if (current_node->data == val) {
             return index;
         }
         index++;
-        temp = temp->next;
+        current_node = current_node->next;
     }
     return -1;
 }
 
-bool delete_from_index(linked_list* list, unsigned int index) {
-    node_t* temp = list->head;
+bool delete_node_from_index(linked_list* list, unsigned int index) {
+    list_node_t* temp = list->head;
     if (index > (list->len - 1)) {
         return false;
     }
@@ -129,32 +119,23 @@ bool delete_from_index(linked_list* list, unsigned int index) {
     return true;
 }
 
-void print_lst(linked_list* list) {
-    unsigned int str_len = get_string_len(list->len);
-    char* result = (char*) malloc(str_len);
-
-    result[0] = '[';
-    result[str_len - 2] = ']';
-    result[str_len - 1] = '\0';
-
-    unsigned int offset = 1;
-    node_t* tmp = list->head;
-    while (tmp != NULL) {
-        result[offset] = INT_TO_CHAR(tmp->data);
-        if (tmp->next != NULL) {
-            result[offset + 1] = ',';
-            result[offset + 2] = ' ';
-            offset += 3;
+void print_list(linked_list* list) {
+    list_node_t* tmp = list->head;
+    if (tmp == NULL) {
+        printf("[]\n");
+    } else {
+        printf("[%d", tmp->data);
+        while (tmp->next != NULL) {
+            tmp = tmp->next;
+            printf(", %d", tmp->data);
         }
-        tmp = tmp->next;
+        printf("]\n");
     }
-
-    printf("%s\n", result);
 }
 
 void free_list(linked_list* list) {
-    node_t* current_head = list->head;
-    node_t* node_to_free = NULL;
+    list_node_t* current_head = list->head;
+    list_node_t* node_to_free = NULL;
     while (current_head != NULL) {
         node_to_free = current_head;
         current_head = current_head->next;
