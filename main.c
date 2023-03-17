@@ -45,6 +45,7 @@ void execute_command(linked_list* lst, char* command[]) {
         int val_to_look_for = atoi(command[2]);
         if (add_after_val(lst, val_to_insert, val_to_look_for) == false) {
             printf("value %d is not found, exiting the program.", val_to_look_for);
+            free_list(lst);
             exit(1);
         }
     }
@@ -56,6 +57,7 @@ void execute_command(linked_list* lst, char* command[]) {
         int index = atoi(command[1]);
         if (delete_node_at_index(lst, index) == false) {
             printf("index %d is too large for list of length %d, exiting the program.", index, lst->len);
+            free_list(lst);
             exit(1);
         }
     }
@@ -76,7 +78,7 @@ int main(int argc, char const *argv[])
     char user_input[MAX_INPUT_LINE_LEN];
     char* command[MAX_WORDS_IN_COMMAND];
 
-    while (1) {
+    while (true) {
         fgets(user_input, sizeof(user_input), stdin);
         convert_user_input_to_lowercase(user_input);
         parse_user_input_into_command(user_input, command);
