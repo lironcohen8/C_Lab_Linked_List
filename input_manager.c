@@ -1,5 +1,5 @@
 #include "linked_list.h"
-
+#include <ctype.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -58,7 +58,7 @@ void execute_command(linked_list* lst, char* command[]) {
     }
 }
 
-int main(int argc, char const *argv[])
+int main()
 {
     linked_list lst;
     init_list(&lst);
@@ -71,8 +71,6 @@ int main(int argc, char const *argv[])
         convert_user_input_to_lowercase(user_input);
         parse_user_input_into_command(user_input, command);
         execute_command(&lst, command);
-        // TODO: Delete printing before submission
-        print_list(&lst);
     }
 
     free_list(&lst);
