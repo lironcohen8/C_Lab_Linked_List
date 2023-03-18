@@ -3,7 +3,8 @@
 
 #include <stdbool.h>
 
-/* forward declare the node struct but the actioal definition is not exposed to the client of this module */
+/* forward declare the node struct 
+but the actual definition is not exposed to the client of this module */
 typedef struct _list_node list_node_t;
 
 typedef struct _linked_list {
