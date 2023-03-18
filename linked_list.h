@@ -18,11 +18,11 @@ void add_end(linked_list* list, int val);
 
 void add_start(linked_list* list, int val);
 
-bool add_after_val(linked_list* list, int val_to_insert, int val_to_look);
+bool add_after_val(linked_list* list, int val_to_insert, int val_to_look_for);
 
 int first_index_of_val(linked_list* list, int val);
 
-bool delete_node_from_index(linked_list* list, unsigned int index);
+bool delete_node_at_index(linked_list* list, unsigned int index);
 
 void print_list(linked_list* list);
 

@@ -87,10 +87,10 @@ void add_start(linked_list* list, int val) {
     list->len++;
 }
 
-bool add_after_val(linked_list* list, int val_to_insert, int val_to_look) {
+bool add_after_val(linked_list* list, int val_to_insert, int val_to_look_for) {
     list_node_t* current_node = list->head;
     while (current_node != NULL) {
-        if (current_node->data == val_to_look) {
+        if (current_node->data == val_to_look_for) {
             insert_after_node(list, current_node, val_to_insert);
             return true;
         }
@@ -112,7 +112,7 @@ int first_index_of_val(linked_list* list, int val) {
     return -1;
 }
 
-bool delete_node_from_index(linked_list* list, unsigned int index) {
+bool delete_node_at_index(linked_list* list, unsigned int index) {
     list_node_t* temp = list->head;
     if (index > (list->len - 1)) {
         return false;
@@ -125,14 +125,14 @@ bool delete_node_from_index(linked_list* list, unsigned int index) {
 }
 
 void print_list(linked_list* list) {
-    list_node_t* tmp = list->head;
-    if (tmp == NULL) {
+    list_node_t* current_node = list->head;
+    if (current_node == NULL) {
         printf("[]\n");
     } else {
-        printf("[%d", tmp->data);
-        while (tmp->next != NULL) {
-            tmp = tmp->next;
-            printf(", %d", tmp->data);
+        printf("[%d", current_node->data);
+        while (current_node->next != NULL) {
+            current_node = current_node->next;
+            printf(", %d", current_node->data);
         }
         printf("]\n");
     }
