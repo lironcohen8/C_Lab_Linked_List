@@ -1,7 +1,6 @@
 #include "linked_list.h"
 
 #include <string.h>
-#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -10,7 +9,7 @@
 
 /* private functions */
 void convert_user_input_to_lowercase(char user_input[]) {
-    for (size_t i = 0; i < strlen(user_input); i++) {
+    for (unsigned int i = 0; i < strlen(user_input); i++) {
         user_input[i] = tolower(user_input[i]);
     }
 }
@@ -31,40 +30,29 @@ void parse_user_input_into_command(char user_input[], char* command[]) {
 
 void execute_command(linked_list* lst, char* command[]) {
     char* command_name = command[0];
-
+    int command_arg_1 = atoi(command[1]);
+    int command_arg_2 = atoi(command[2]);
     if (strcmp(command_name, "add_end") == 0) {
-        int val = atoi(command[1]);
-        add_end(lst, val);
-    }
-    else if (strcmp(command_name, "add_start") == 0) {
-        int val = atoi(command[1]);
-        add_start(lst, val);
-    }
-    else if (strcmp(command_name, "add_after") == 0) {
-        int val_to_insert = atoi(command[1]);
-        int val_to_look_for = atoi(command[2]);
-        if (add_after_val(lst, val_to_insert, val_to_look_for) == false) {
-            printf("value %d is not found, exiting the program.", val_to_look_for);
+        add_end(lst, command_arg_1);
+    } else if (strcmp(command_name, "add_start") == 0) {
+        add_start(lst, command_arg_1);
+    } else if (strcmp(command_name, "add_after") == 0) {
+        if (add_after_val(lst, command_arg_1, command_arg_2) == false) {
+            printf("value %d is not found, exiting the program.", command_arg_2);
             free_list(lst);
             exit(1);
         }
-    }
-    else if (strcmp(command_name, "index") == 0) {
-        int val = atoi(command[1]);
-        printf("%d\n", first_index_of_val(lst, val));
-    }
-    else if (strcmp(command_name, "del") == 0) {
-        int index = atoi(command[1]);
-        if (delete_node_at_index(lst, index) == false) {
-            printf("index %d is too large for list of length %d, exiting the program.", index, lst->len);
+    } else if (strcmp(command_name, "index") == 0) {
+        printf("%d\n", first_index_of_val(lst, command_arg_1));
+    } else if (strcmp(command_name, "del") == 0) {
+        if (delete_node_at_index(lst, command_arg_1) == false) {
+            printf("index %d is too large for list of length %d, exiting the program.", command_arg_1, lst->len);
             free_list(lst);
             exit(1);
         }
-    }
-    else if (strcmp(command_name, "print") == 0) {
+    } else if (strcmp(command_name, "print") == 0) {
         print_list(lst);
-    }
-    else { // exit 
+    } else { // exit 
         free_list(lst);
         exit(0);
     }
