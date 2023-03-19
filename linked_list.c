@@ -115,7 +115,7 @@ int first_index_of_val(linked_list* list, int val) {
 
 bool delete_node_at_index(linked_list* list, unsigned int index) {
     list_node_t* temp = list->head;
-    if (index > (list->len - 1)) {
+    if ((list->len == 0) || (index > (list->len - 1))) {
         return false;
     }
     for (unsigned int i = 0; i < index; i++) {
