@@ -60,10 +60,8 @@ void add_end(linked_list* list, int val) {
     list_node_t* new_node = init_node(val);
 
     if (list->tail == NULL) {
-        // Empty list
         list->head = new_node;
     } else {
-        // Adding new node to the end of the list
         list->tail->next = new_node;
         new_node->prev = list->tail;
     }
@@ -76,10 +74,8 @@ void add_start(linked_list* list, int val) {
     list_node_t* new_node = init_node(val);
 
     if (list->head == NULL) {
-        // Empty list
         list->tail = new_node;
     } else {
-        // Adding new node at the start of the list
         list->head->prev = new_node;
         new_node->next = list->head;
     }
